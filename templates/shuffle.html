@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Debate Team Selector</title>
+    <link rel="stylesheet" href="./static/css/main.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .teams {
+            margin: 20px 0;
+            text-align: left;
+        }
+        .button {
+            padding: 10px 20px;
+            background: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="front" style="background-image: url(./static/images/back2.png); background-size: cover;
+  background-repeat: no-repeat; background-position: center; max-width:100%;">
+    <div class="container">
+        <h1>Random Debate Team Selector</h1>
+        <p>Click the button below to generate balanced teams and debates across rounds.</p>
+        <button class="button" onclick="generateDebates()">Generate Next Round</button>
+        <div class="teams" id="teams"></div>
+    </div>
+
+    <script>
+        const teams = ["Team A", "Team B", "Team C", "Team D", "Team E", "Team F", "Team G", "Team H", "Team I"];
+        let teamDebates = teams.reduce((acc, team) => {
+            acc[team] = 0;
+            return acc;
+        }, {});
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function generateDebates() {
+            const sortedTeams = Object.keys(teamDebates).sort((a, b) => teamDebates[a] - teamDebates[b]);
+            const roundTeams = sortedTeams.slice(0, 6);
+            roundTeams.forEach(team => teamDebates[team]++);
+
+            const debates = [
+                `${roundTeams[0]} vs ${roundTeams[1]}`,
+                `${roundTeams[2]} vs ${roundTeams[3]}`,
+                `${roundTeams[4]} vs ${roundTeams[5]}`
+            ];
+
+            const rest = sortedTeams.slice(6);
+
+            const resultDiv = document.getElementById("teams");
+            resultDiv.innerHTML = `
+                <h3>Debates:</h3>
+                <ul>
+                    ${debates.map(debate => `<li>${debate}</li>`).join('')}
+                </ul>
+                <h3>Teams not in this round:</h3>
+                <ul>
+                    ${rest.map(team => `<li>${team}</li>`).join('')}
+                </ul>
+            `;
+        }
+    </script>
+        <footer>
+            <div class="footer-container">
+              <!-- Section 1 -->
+              <div class="footer-section">
+                <img class="fimg" src="./static/images/mo3dila-+-text-f.png"/>
+              </div>
+        
+              <!-- Section 3 -->
+              <div class="footer-section">
+                <h3>تواصل معنا</h3>
+                <ul>
+                  <li>Email: insync671@gmail.com</li>
+                  <li>Instagram: @paradoxclub_office</li>
+                  <li>جامعة محمد خيضر بسكرة</li>
+                </ul>
+              </div>
+            </div>
+        
+            <!-- Footer Bottom -->
+            <div class="footer-bottom">
+              &copy; 2024 Paradox club | All Rights Reserved
+            </div>
+          </footer>
+</body>
+</html>

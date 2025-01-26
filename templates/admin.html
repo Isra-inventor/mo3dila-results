@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="./static/css/main.css" />
+</head>
+<body>
+    <div class="front" style="background-image: url(./static/images/back2.png); background-size: cover;
+  background-repeat: no-repeat; background-position: center; max-width:100%;">
+    <div class="info">
+        <form method="POST" class="info">
+            <label class="user" for="judge">Select Judge:</label>
+            <select class="space" name="judge" id="judge" required>
+                {% for judge in judges %}
+                <option value="{{ judge }}">{{ judge }}</option>
+                {% endfor %}
+            </select>
+            <br><br>
+            <label class="user" for="debate">Select Debate:</label>
+            <select class="space" name="debate" id="debate" required>
+                {% for debate in debates %}
+                <option value="{{ debate }}">{{ debate }}</option>
+                {% endfor %}
+            </select>
+            <p>{{ dict_string }}</p> 
+            <br><br>
+            <button class="loginb" type="submit">Assign Debate</button>
+        </form>
+    </div>
+    <footer>
+        <div class="footer-container">
+          <!-- Section 1 -->
+          <div class="footer-section">
+            <img class="fimg" src="./static/images/mo3dila-+-text-f.png"/>
+          </div>
+    
+          <!-- Section 3 -->
+          <div class="footer-section">
+            <h3>تواصل معنا</h3>
+            <ul>
+              <li>Email: insync671@gmail.com</li>
+              <li>Instagram: @paradoxclub_office</li>
+              <li>جامعة محمد خيضر بسكرة</li>
+            </ul>
+          </div>
+        </div>
+    
+        <!-- Footer Bottom -->
+        <div class="footer-bottom">
+          &copy; 2024 Paradox club | All Rights Reserved
+        </div>
+      </footer>
+</body>
+</html>

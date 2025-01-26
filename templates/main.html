@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Results</title>
+    <link rel="stylesheet" href="./static/css/main.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            width: 80%;
+            max-width: 1200px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        td {
+            background-color: #f9f9f9;
+        }
+        td span {
+            display: block;
+            margin: 3px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>النتائج</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>الفريق</th>
+                    <th>الدرجة</th>
+                    <th>درجات المتحدثين</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for team in team_data %}
+                    <tr>
+                        <td>{{ team.team }}</td>
+                        <td>{{ team.score }}</td>
+                            <td>
+                                  {{ team.speakers }}
+                            </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href=/login><button class="loginb">عودة</button></a>
+    </div>
+</body>
+</html>
