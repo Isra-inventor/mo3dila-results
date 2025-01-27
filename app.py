@@ -106,8 +106,8 @@ def judge_portal():
                 score21 = request.form.get("score21")
                 score22 = request.form.get("score22")
                 score23 = request.form.get("score23")
-                teams[team1]["score"]=int(score11)+int(score12)+int(score13)
-                teams[team2]["score"]=int(score21)+int(score22)+int(score23)
+                teams[team1]["score"]+=int(score11)+int(score12)+int(score13)
+                teams[team2]["score"]+=int(score21)+int(score22)+int(score23)
                 debatess[assigned_debate]={team1:"",team2:""}
                 debatess[assigned_debate][team1]=str(score11)+", "+str(score12)+", "+str(score13)
                 debatess[assigned_debate][team2]=str(score21)+", "+str(score22)+", "+str(score23)
@@ -134,11 +134,10 @@ def admin_portal():
             # Get form data
             judge = request.form.get("judge")
             debate = request.form.get("debate")
-            debat=debatess
             if judge and debate:
                 # Assign the debate to the judge
                 assignments[judge] = debate
-                return redirect(url_for("admin_portal"))  # Refresh the page
+                return "assigned"  # Refresh the page
 
         # Render the admin page with judges, debates, and assignments
         judge_list = [user for user, info in users.items() if info["role"] == "judge"]
@@ -146,7 +145,6 @@ def admin_portal():
             "admin.html",
             judges=judge_list,
             debates=debates,
-            debatess=debatess,
             assignments=assignments
         )
 
