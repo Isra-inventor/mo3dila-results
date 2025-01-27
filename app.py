@@ -32,31 +32,26 @@ teams = {
     "I": {"score": 0},
 }
 debatess={}
+speakers={"hy":0,"ha":0,"hm":0,"ik":0,"ic":0,"is":0,"dk":0,"dn":0,"da":0,"aj":0,"ah":0,"aa":0}
 # Add this global variable to track debates and assignments
 debates = ["AB", "CD", "EF", "GH", "AI","BC","DE","FG","HI"] 
-assignments = {}  # To store which judge gets which debate
+assignments = {"malak06":"HI","soundous06":"HI","serine07":"DA","sabrinama":"HI","brahimoud":"HI","profkihal":"DA",
+          "eleid25":"DA","judge001":"DA","judge002":"DA"}  # To store which judge gets which debate
 
 @app.route('/')
 def index():
     # Sort teams based on their score in descending order
     sorted_teams = sorted(teams.items(), key=lambda x: x[1]['score'], reverse=True)
-
     # Prepare a list with team names, total scores, and speaker scores
     team_data = []
 
     for team, score_data in sorted_teams:
-        speaker=[]
-        for i in debatess.keys():
-            if team in debatess[i]:
-                speaker.append(debatess[i][team])
         team_dict = {
             'team': team,
             'score': score_data['score'],
-            'speakers': str(speaker)
         }
         team_data.append(team_dict)
-        print(team_dict)
-    return render_template('main.html', team_data=team_data)
+    return render_template('main.html', team_data=team_data, speakers=speakers)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -97,26 +92,46 @@ def judge_portal():
             assigned_debate = assignments.get(username, None)  # Find the assigned debate for this judge
             if not assigned_debate:
                 return f"No debate assigned to you. Contact the admin.", 403
-            team1=assigned_debate[0]
-            team2=assigned_debate[1]
             if request.method == "POST":
-                score11 = request.form.get("score11")
-                score12 = request.form.get("score12")
-                score13 = request.form.get("score13")
-                score21 = request.form.get("score21")
-                score22 = request.form.get("score22")
-                score23 = request.form.get("score23")
-                teams[team1]["score"]+=int(score11)+int(score12)+int(score13)
-                teams[team2]["score"]+=int(score21)+int(score22)+int(score23)
-                debatess[assigned_debate]={team1:"",team2:""}
-                debatess[assigned_debate][team1]=str(score11)+", "+str(score12)+", "+str(score13)
-                debatess[assigned_debate][team2]=str(score21)+", "+str(score22)+", "+str(score23)
-                print(teams)
-                print(debatess)
-                
+              if assigned_debate=="HI":
+                score11 = request.form.get("scorehy")
+                speakers["hy"]+=int(score11)
+                score12 = request.form.get("scoreha")
+                speakers["ha"]+=int(score12)
+                score13 = request.form.get("scorehm")
+                speakers["hm"]+=int(score13)
+                score14 = request.form.get("scoreh")
+                score21 = request.form.get("scoreis")
+                speakers["is"]+=int(score21)
+                score22 = request.form.get("scoreik")
+                speakers["ik"]+=int(score22)
+                score23 = request.form.get("scoreic")
+                speakers["ic"]+=int(score23)
+                score24 = request.form.get("scorei")
+                teams["H"]["score"]+=int(score11)+int(score12)+int(score13)+int(score14)
+                teams["I"]["score"]+=int(score21)+int(score22)+int(score23)+int(score24)              
+                return redirect(url_for("judge_portal"))  # Refresh the page
+              
+              elif assigned_debate=="DA":
+                score11 = request.form.get("scoredk")
+                speakers["dk"]+=int(score11)
+                score12 = request.form.get("scoredn")
+                speakers["dn"]+=int(score12)
+                score13 = request.form.get("scoreda")
+                speakers["da"]+=int(score13)
+                score14 = request.form.get("scored")
+                score21 = request.form.get("scoreah")
+                speakers["ah"]+=int(score21)
+                score22 = request.form.get("scoreaj")
+                speakers["aj"]+=int(score22)
+                score23 = request.form.get("scoreaa")
+                speakers["aa"]+=int(score23)
+                score24 = request.form.get("scorea")
+                teams["D"]["score"]+=int(score11)+int(score12)+int(score13)+int(score14)
+                teams["A"]["score"]+=int(score21)+int(score22)+int(score23)+int(score24)              
                 return redirect(url_for("judge_portal"))  # Refresh the page
 
-            return render_template("judge.html")
+            return render_template(f"{assigned_debate}.html")
 
         # If the user is not authorized, redirect to login
         return redirect(url_for("login"))
@@ -129,25 +144,6 @@ def participant_portal():
 
 @app.route("/admin-portal", methods=["GET", "POST"])
 def admin_portal():
-    if session.get("role") == "admin":
-        if request.method == "POST":
-            # Get form data
-            judge = request.form.get("judge")
-            debate = request.form.get("debate")
-            if judge and debate:
-                # Assign the debate to the judge
-                assignments[judge] = debate
-                return redirect(url_for("admin_portal")) # Refresh the page
-
-        # Render the admin page with judges, debates, and assignments
-        judge_list = [user for user, info in users.items() if info["role"] == "judge"]
-        return render_template(
-            "admin.html",
-            judges=judge_list,
-            debates=debates,
-            assignments=assignments
-        )
-
     return redirect(url_for("login"))
 
 
