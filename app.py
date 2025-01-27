@@ -137,7 +137,7 @@ def admin_portal():
             if judge and debate:
                 # Assign the debate to the judge
                 assignments[judge] = debate
-                return "assigned"  # Refresh the page
+                return redirect(url_for("admin_portal")) # Refresh the page
 
         # Render the admin page with judges, debates, and assignments
         judge_list = [user for user, info in users.items() if info["role"] == "judge"]
